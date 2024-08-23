@@ -1,55 +1,76 @@
-let contadorDesaprobados = 0, contadorAprobados = 0, contadorPromocionados = 0;  //camelcase
-
+// Contadores
+let contadorDesaprobados = 0, contadorAprobados = 0, contadorPromocionados = 0;
+// Acumuladores
 let acumuladorDesaprobados = 0, acumuladorAprobados = 0, acumuladorPromocionados = 0;
-
+// Variables para nota maxima y minima
 let maxNota = 1, minNota = 10;
 
 do {
-    
-    do{
-        let nota = parseInt(prompt("Ingrese una nota del 1 al 10"));
-        
-        if(isNaN(nota)){
-            alert("Ingrese una nota numerica");
+    let nota;
+    let notaValida = true;
+    do {
+        // Lo que se repite
+        nota = parseInt(prompt("Ingrese una nota (1 al 10)"));
+        // Esto va a devolver:
+        // - Numero entre 1 y 10
+        // - Numero menor a 1
+        // - Numero mayor a 10
+        // - NaN
+
+        if(isNaN(nota)) {
+            alert("Ingrese una nota numérica");
+            notaValida = false;
         }
-        else if(nota < 1){
-            alert("la nota debe ser 1 o mas");
+        else if(nota < 1) {
+            alert("La nota debe ser 1 o más");
+            notaValida = false;
         }
-        else if(nota > 10){
-            alert("la nota no puede ser mayor a 10");
+        else if(nota > 10) {
+            alert("La nota no puede ser mayor a 10");
+            notaValida = false;
+        }
+        else {
+            notaValida = true;
         }
 
-    }while((nota < 1) || (nota > 10) || isNaN(nota));
+    } while(!notaValida);   // notaValida != true
 
-
-    if(nota > 4){
-        contadorDesaprobados ++;
-        acumuladorDesaprobados = acumuladorPromocionados + nota;
+    // Empiezo a preguntar
+    if(nota < 4) {
+        // Desaprobado
+        contadorDesaprobados = contadorDesaprobados + 1;
+        acumuladorDesaprobados = acumuladorDesaprobados + nota;
     }
-    else{
-        contadorAprobados ++;
+    else {
+        // Aprobado
+        contadorAprobados += 1;
         acumuladorAprobados += nota;
-        if(nota >=7){
-            contadorPromocionados ++;
+
+        // Pregunto si ademas, promociono
+        if(nota >= 7) {
+            // Si, promociono tambien
+            contadorPromocionados++;
             acumuladorPromocionados += nota;
         }
     }
 
-    if(nota > maxNota){
-
+    // Pregunto si la nueva nota es mayor a la anterior
+    if(nota > maxNota) {
+        // Si es asi, encontre un nuevo maximo
         maxNota = nota;
     }
-    if(nota < minNota){
+    // Pregunto si la nueva nota es menor a la anterior
+    if(nota < minNota) {
+        // Si es asi, encontre un nuevo minimo
         minNota = nota;
     }
 
 } while(confirm("Otra nota?"));
 
-alert(`Hubo ${contadorDesaprobados} alumnos desaprobados y su nota promedio fue de ${acumuladorDesaprobados / contadorDesaprobados.toFixed(1)}`);
+// Una vez que se cargaron las notas, sacamos los promedios
+alert(`Hubo ${contadorDesaprobados} alumnos desaprobados y su nota promedio fue de ${(acumuladorDesaprobados / contadorDesaprobados).toFixed(1)}`);
+alert(`Hubo ${contadorAprobados} alumnos aprobados y su nota promedio fue de ${(acumuladorAprobados / contadorAprobados).toFixed(1)}`);
+alert(`Hubo ${contadorPromocionados} alumnos promocionados y su nota promedio fue de ${(acumuladorPromocionados / contadorPromocionados).toFixed(1)}`);
 
-alert(`Hubo ${contadorAprobados} alumnos aprobados y su nota promedio fue de ${acumuladorAprobados / contadorAprobados.toFixed(1)}`);
-
-alert(`Hubo ${contadorPromocionados} alumnos promocionados y su nota promedio fue de ${acumuladorPromocionados / contadorPromocionados.toFixed(1)}`);
-
-alert(`la nota minima del curso fue ${minNota} `);
-alert(`la nota maxima del curso fue ${maxNota} `);
+alert(`La nota minima del curso fue ${minNota}`);
+alert(`La nota maxima del curso fue ${maxNota}`);
